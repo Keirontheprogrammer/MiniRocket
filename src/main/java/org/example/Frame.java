@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 public class Frame extends JFrame implements MouseListener {
     JLabel label;
@@ -16,15 +17,18 @@ public class Frame extends JFrame implements MouseListener {
     Action downAction;
     Action leftAction;
     Action rightAction;
-    boolean isColliding;
     int score=0;
     ImageIcon icon=new ImageIcon("space_ship.png");
     ImageIcon ship=new ImageIcon("901787.png");
     ImageIcon image=new ImageIcon("moon.png");
+    Random random=new Random();
+
     Frame() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(600,600);
-        this.getContentPane().setBackground(Color.BLACK);
+
+        Timer timer=new Timer(400,e ->colorchange());
+        timer.start();
 
 
         File file=new File("Gemini - The Soundlings.wav");
@@ -34,11 +38,11 @@ public class Frame extends JFrame implements MouseListener {
         clip.start();
 
         label3=new JLabel();
-        label3.setBackground(Color.BLACK);
         label3.setBounds(0,-30,200,100);
-        label3.setForeground(Color.white);
+        label3.setForeground(Color.WHITE);
+        label3.setBackground(Color.BLACK);
         label3.setFont(new Font("MV Boli",Font.BOLD,13));
-        label3.setOpaque(true);
+//        label3.setOpaque(true);
         label3.setText("Click SpaceShip to change");
 
         label2=new JLabel();
@@ -134,6 +138,15 @@ public class Frame extends JFrame implements MouseListener {
 //    public void keyReleased(KeyEvent e) {
 //
 //    }
+public void colorchange(){
+        int r=random.nextInt(56);
+        int g=random.nextInt(26);
+        int b=random.nextInt(30);
+        this.getContentPane().setBackground(new Color(r,g,b));
+
+
+
+}
 
     public class UpAction extends AbstractAction{
 
