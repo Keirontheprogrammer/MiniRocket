@@ -5,15 +5,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
-public class Frame extends JFrame implements KeyListener {
+public class Frame extends JFrame implements KeyListener, MouseListener {
     JLabel label;
     JLabel label2;
+    JLabel label3;
     Clip clip;
     int score=0;
     ImageIcon icon=new ImageIcon("space_ship.png");
+    ImageIcon ship=new ImageIcon("901787.png");
     ImageIcon image=new ImageIcon("moon.png");
     Frame() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,6 +31,14 @@ public class Frame extends JFrame implements KeyListener {
         clip.open(audioStream);
         clip.start();
 
+        label3=new JLabel();
+        label3.setBackground(Color.BLACK);
+        label3.setBounds(0,-30,200,100);
+        label3.setForeground(Color.white);
+        label3.setFont(new Font("MV Boli",Font.BOLD,13));
+        label3.setOpaque(true);
+        label3.setText("Click SpaceShip to change");
+
         label2=new JLabel();
         label2.setIcon(image);
         label2.setBounds(180,0,150,150);
@@ -34,9 +46,11 @@ public class Frame extends JFrame implements KeyListener {
         label=new JLabel();
         label.setIcon(icon);
         label.setBounds(0,400,150,150);
+        label.addMouseListener(this);
 
         this.add(label);
         this.add(label2);
+        this.add(label3);
         this.setLayout(null);
         this.setVisible(true);
     }
@@ -97,6 +111,34 @@ public class Frame extends JFrame implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        label.setIcon(ship);
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        label.setIcon(icon);
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
 
     }
 }
