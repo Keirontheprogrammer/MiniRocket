@@ -3,18 +3,20 @@ package org.example;
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
-public class Frame extends JFrame implements KeyListener, MouseListener {
+public class Frame extends JFrame implements MouseListener {
     JLabel label;
     JLabel label2;
     JLabel label3;
     Clip clip;
+    Action upAction;
+    Action downAction;
+    Action leftAction;
+    Action rightAction;
+    boolean isColliding;
     int score=0;
     ImageIcon icon=new ImageIcon("space_ship.png");
     ImageIcon ship=new ImageIcon("901787.png");
@@ -23,7 +25,7 @@ public class Frame extends JFrame implements KeyListener, MouseListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(600,600);
         this.getContentPane().setBackground(Color.BLACK);
-        this.addKeyListener(this);
+
 
         File file=new File("Gemini - The Soundlings.wav");
         AudioInputStream audioStream= AudioSystem.getAudioInputStream(file);
@@ -48,6 +50,23 @@ public class Frame extends JFrame implements KeyListener, MouseListener {
         label.setBounds(0,400,150,150);
         label.addMouseListener(this);
 
+        upAction= new UpAction();
+        downAction=new DownAction();
+        leftAction=new LeftAction();
+        rightAction=new RightAction();
+
+        label.getInputMap().put(KeyStroke.getKeyStroke("UP"),"UpKey");
+        label.getActionMap().put("UpKey",upAction);
+
+        label.getInputMap().put(KeyStroke.getKeyStroke("DOWN"),"DownKey");
+        label.getActionMap().put("DownKey",downAction);
+
+        label.getInputMap().put(KeyStroke.getKeyStroke("LEFT"),"LeftKey");
+        label.getActionMap().put("LeftKey",leftAction);
+
+        label.getInputMap().put(KeyStroke.getKeyStroke("RIGHT"),"RightKey");
+        label.getActionMap().put("RightKey",rightAction);
+
         this.add(label);
         this.add(label2);
         this.add(label3);
@@ -56,63 +75,123 @@ public class Frame extends JFrame implements KeyListener, MouseListener {
     }
 
     boolean isColliding(){
+
         return label.getBounds().intersects(label2.getBounds());
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        switch (e.getKeyChar()){
-            case 'w':label.setLocation(label.getX(),label.getY()-10);
-                break;
 
-            case 's':label.setLocation(label.getX(),label.getY()+10);
-                break;
-
-            case 'a':label.setLocation(label.getX()-10,label.getY());
-                break;
-
-            case 'd':label.setLocation(label.getX()+10,label.getY());
-                break;
-
+//    @Override
+//    public void keyTyped(KeyEvent e) {
+//        switch (e.getKeyChar()){
+//            case 'w':label.setLocation(label.getX(),label.getY()-10);
+//                break;
+//
+//            case 's':label.setLocation(label.getX(),label.getY()+10);
+//                break;
+//
+//            case 'a':label.setLocation(label.getX()-10,label.getY());
+//                break;
+//
+//            case 'd':label.setLocation(label.getX()+10,label.getY());
+//                break;
+//
 //            case :label.setLocation(label.getX()+10,label.getY()-10);
 //                break;
 //
 //            case :label.setLocation(label.getX()-10,label.getY()+10);
 //                break;
+//        }
+//        if(isColliding()){
+//            score++;
+//            JOptionPane.showMessageDialog(null, "YOU LANDED ON THE MOON :) "+score);
+//        }
+//    }
+
+//    @Override
+//    public void keyPressed(KeyEvent e) {
+//        switch (e.getKeyCode()){
+//            case 38:label.setLocation(label.getX(),label.getY()-10);
+//                break;
+//
+//            case 40:label.setLocation(label.getX(),label.getY()+10);
+//                break;
+//
+//            case 37:label.setLocation(label.getX()-10,label.getY());
+//                break;
+//
+//            case 39:label.setLocation(label.getX()+10,label.getY());
+//                break;
+//        }
+//        if(isColliding()){
+//            score++;
+//            JOptionPane.showMessageDialog(null, "YOU LANDED ON THE MOON :) score: "+score);
+//            label.setLocation(0,400);
+//
+//    }
+//    }
+
+//    @Override
+//    public void keyReleased(KeyEvent e) {
+//
+//    }
+
+    public class UpAction extends AbstractAction{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            label.setLocation(label.getX(),label.getY()-10);
+            if(isColliding()){
+                score++;
+                JOptionPane.showMessageDialog(null,"LANDED :) score: "+score);
+                label.setLocation(0,400);
+            }
+
         }
-        if(isColliding()){
-            score++;
-            JOptionPane.showMessageDialog(null, "YOU LANDED ON THE MOON :) "+score);
+    }
+
+    public class DownAction extends AbstractAction{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            label.setLocation(label.getX(),label.getY()+10);
+            if(isColliding()){
+                score++;
+                JOptionPane.showMessageDialog(null,"LANDED :) score: "+score);
+                label.setLocation(0,400);
+            }
         }
     }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()){
-            case 38:label.setLocation(label.getX(),label.getY()-10);
-                break;
+    public class LeftAction extends AbstractAction{
 
-            case 40:label.setLocation(label.getX(),label.getY()+10);
-                break;
-
-            case 37:label.setLocation(label.getX()-10,label.getY());
-                break;
-
-            case 39:label.setLocation(label.getX()+10,label.getY());
-                break;
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            label.setLocation(label.getX()-10,label.getY());
+            if(isColliding()){
+                score++;
+                JOptionPane.showMessageDialog(null,"LANDED :) score: "+score);
+                label.setLocation(0,400);
+            }
         }
-        if(isColliding()){
-            score++;
-            JOptionPane.showMessageDialog(null, "YOU LANDED ON THE MOON :) score: "+score);
-            label.setLocation(0,400);
-
-    }
     }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
+    public class RightAction extends AbstractAction{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            label.setLocation(label.getX()+10,label.getY());
+            if(isColliding()){
+                score++;
+                JOptionPane.showMessageDialog(null,"LANDED :) score: "+score);
+                label.setLocation(0,400);
+            }
+        }
 
     }
+
+
+
+
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -141,4 +220,5 @@ public class Frame extends JFrame implements KeyListener, MouseListener {
     public void mouseExited(MouseEvent e) {
 
     }
+
 }
