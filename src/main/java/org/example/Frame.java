@@ -31,11 +31,12 @@ public class Frame extends JFrame implements MouseListener {
         timer.start();
 
 
-        File file=new File("Gemini - The Soundlings.wav");
+        File file=new File("action-loop-e-90-bpm-brvhrtz-233462.wav");
         AudioInputStream audioStream= AudioSystem.getAudioInputStream(file);
         clip=AudioSystem.getClip();
         clip.open(audioStream);
         clip.start();
+        clip.loop(clip.LOOP_CONTINUOUSLY);
 
         label3=new JLabel();
         label3.setBounds(0,-30,200,100);
